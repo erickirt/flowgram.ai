@@ -21,11 +21,11 @@ test.describe('node operations', () => {
 
   test('add node', async () => {
     const prevCount = await editorPage.getNodeCount();
-    await editorPage.insert('condition', {
+    await editorPage.insert('switch', {
       from: 'llm_0',
-      to: 'loop_0',
+      to: 'switch_0',
     });
     const defaultNodeCount = await editorPage.getNodeCount();
-    expect(defaultNodeCount).toEqual(prevCount + 3);
+    expect(defaultNodeCount).toEqual(prevCount + 4);
   });
 });

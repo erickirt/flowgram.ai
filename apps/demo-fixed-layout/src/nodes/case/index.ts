@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 
 import { FlowNodeRegistry } from '../../typings';
-import iconIf from '../../assets/icon-if.png';
+import iconCase from '../../assets/icon-case.png';
 import { formMeta } from './form-meta';
 
 let id = 2;
@@ -14,19 +14,19 @@ export const CaseNodeRegistry: FlowNodeRegistry = {
   extend: 'block',
   meta: {
     copyDisable: true,
+    addDisable: true,
   },
   info: {
-    icon: iconIf,
+    icon: iconCase,
     description: 'Execute the branch when the condition is met.',
   },
-  canAdd: () => false,
   canDelete: (ctx, node) => node.parent!.blocks.length >= 3,
   onAdd(ctx, from) {
     return {
-      id: `if_${nanoid(5)}`,
+      id: `Case_${nanoid(5)}`,
       type: 'case',
       data: {
-        title: `If_${id++}`,
+        title: `Case_${id++}`,
         inputs: {
           type: 'object',
           required: ['condition'],

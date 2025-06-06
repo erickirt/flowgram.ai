@@ -43,14 +43,15 @@ export interface FlowNodeJSON extends FlowNodeJSONDefault {
  * 你可以自定义节点的meta
  */
 export interface FlowNodeMeta extends FlowNodeMetaDefault {
-  disableSideBar?: boolean;
+  sidebarDisable?: boolean;
+  style?: React.CSSProperties;
 }
 /**
  * You can customize your own node registry
  * 你可以自定义节点的注册器
  */
 export interface FlowNodeRegistry extends FlowNodeRegistryDefault {
-  meta: FlowNodeMeta;
+  meta?: FlowNodeMeta;
   info: {
     icon: string;
     description: string;
