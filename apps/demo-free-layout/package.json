@@ -30,6 +30,7 @@
   "dependencies": {
     "@douyinfe/semi-icons": "^2.80.0",
     "@douyinfe/semi-ui": "^2.80.0",
+    "@flowgram.ai/runtime-interface": "workspace:*",
     "@flowgram.ai/free-layout-editor": "workspace:*",
     "@flowgram.ai/free-snap-plugin": "workspace:*",
     "@flowgram.ai/free-lines-plugin": "workspace:*",
@@ -38,6 +39,7 @@
     "@flowgram.ai/free-container-plugin": "workspace:*",
     "@flowgram.ai/free-group-plugin": "workspace:*",
     "@flowgram.ai/form-materials": "workspace:*",
+    "@flowgram.ai/runtime-js": "workspace:*",
     "lodash-es": "^4.17.21",
     "nanoid": "^4.0.2",
     "react": "^18",

@@ -20,9 +20,12 @@ export default function BranchAdder(props: PropsType) {
   function addBranch() {
     const block = operation.addBlock(
       node,
-      node.flowNodeType === 'condition'
+      node.flowNodeType === 'switch'
         ? CaseNodeRegistry.onAdd!(ctx, node)
-        : CatchBlockNodeRegistry.onAdd!(ctx, node)
+        : CatchBlockNodeRegistry.onAdd!(ctx, node),
+      {
+        index: 0,
+      }
     );
 
     setTimeout(() => {

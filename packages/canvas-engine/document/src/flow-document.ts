@@ -226,12 +226,7 @@ export class FlowDocument<T = FlowDocumentJSON> implements Disposable {
    * @param data
    * @param addedNodes
    */
-  addNode(
-    data: AddNodeData,
-    addedNodes?: FlowNodeEntity[],
-    ignoreCreateAndUpdateEvent?: boolean,
-    ignoreBlocks?: boolean
-  ): FlowNodeEntity {
+  addNode(data: AddNodeData, addedNodes?: FlowNodeEntity[]): FlowNodeEntity {
     const { id, type = 'block', originParent, parent, meta, hidden, index } = data;
     let node = this.getNode(id);
     let isNew = false;
@@ -279,7 +274,7 @@ export class FlowDocument<T = FlowDocumentJSON> implements Disposable {
       if (extendNodes && addedNodes) {
         addedNodes.push(...extendNodes);
       }
-    } else if (data.blocks && data.blocks.length > 0 && !ignoreBlocks) {
+    } else if (data.blocks && data.blocks.length > 0) {
       // 兼容老的写法
       if (!data.blocks[0].type) {
         this.addInlineBlocks(node, data.blocks, addedNodes);
@@ -288,16 +283,14 @@ export class FlowDocument<T = FlowDocumentJSON> implements Disposable {
       }
     }
 
-    if (!ignoreCreateAndUpdateEvent) {
-      if (isNew) {
-        this.onNodeCreateEmitter.fire({
-          node,
-          data,
-          json: data,
-        });
-      } else {
-        this.onNodeUpdateEmitter.fire({ node, data, json: data });
-      }
+    if (isNew) {
+      this.onNodeCreateEmitter.fire({
+        node,
+        data,
+        json: data,
+      });
+    } else {
+      this.onNodeUpdateEmitter.fire({ node, data, json: data });
     }
 
     return node;

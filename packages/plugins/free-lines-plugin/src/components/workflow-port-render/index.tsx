@@ -8,7 +8,7 @@ import {
   usePlaygroundReadonlyState,
   WorkflowLinesManager,
 } from '@flowgram.ai/free-layout-core';
-import { useService } from '@flowgram.ai/core';
+import { MouseTouchEvent, useService } from '@flowgram.ai/core';
 
 import { PORT_BG_CLASS_NAME } from '../../constants/points';
 import { WorkflowPointStyle } from './style';
@@ -18,7 +18,15 @@ export interface WorkflowPortRenderProps {
   entity: WorkflowPortEntity;
   className?: string;
   style?: React.CSSProperties;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>, port: WorkflowPortEntity) => void;
+  /** 激活状态颜色 (linked/hovered) */
+  primaryColor?: string;
+  /** 默认状态颜色 */
+  secondaryColor?: string;
+  /** 错误状态颜色 */
+  errorColor?: string;
+  /** 背景颜色 */
+  backgroundColor?: string;
 }
 
 export const WorkflowPortRender: React.FC<WorkflowPortRenderProps> =
@@ -79,11 +87,39 @@ export const WorkflowPortRender: React.FC<WorkflowPortRenderProps> =
       // 有线条链接的时候深蓝色小圆点
       linked,
     });
+
+    // 构建 CSS 自定义属性用于颜色覆盖
+    const colorStyles: Record<string, string> = {};
+    if (props.primaryColor) {
+      colorStyles['--g-workflow-port-color-primary'] = props.primaryColor;
+    }
+    if (props.secondaryColor) {
+      colorStyles['--g-workflow-port-color-secondary'] = props.secondaryColor;
+    }
+    if (props.errorColor) {
+      colorStyles['--g-workflow-port-color-error'] = props.errorColor;
+    }
+    if (props.backgroundColor) {
+      colorStyles['--g-workflow-port-color-background'] = props.backgroundColor;
+    }
+
+    const combinedStyle = targetElement
+      ? { ...props.style, ...colorStyles }
+      : { ...props.style, ...colorStyles, left: posX, top: posY };
+
     const content = (
       <WorkflowPointStyle
         className={className}
-        style={targetElement ? props.style : { ...props.style, left: posX, top: posY }}
-        onClick={onClick}
+        style={combinedStyle}
+        onClick={(e) => onClick?.(e, entity)}
+        onTouchStart={(e) => {
+          if (!onClick) {
+            return;
+          }
+          MouseTouchEvent.onTouched(e, (mouseEvent) => {
+            onClick(mouseEvent as unknown as React.MouseEvent<HTMLDivElement>, entity);
+          });
+        }}
         data-port-entity-id={entity.id}
         data-port-entity-type={entity.portType}
         data-testid="sdk.workflow.canvas.node.port"
