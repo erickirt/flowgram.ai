@@ -55,10 +55,16 @@ export const usePortClick = () => {
     // calculate position for the new node - 计算新节点的位置
     const nodePosition = WorkflowNodePanelUtils.adjustNodePosition({
       nodeType,
-      position: {
-        x: mousePos.x + 100,
-        y: mousePos.y,
-      },
+      position:
+        port.location === 'bottom'
+          ? {
+              x: mousePos.x,
+              y: mousePos.y + 100,
+            }
+          : {
+              x: mousePos.x + 100,
+              y: mousePos.y,
+            },
       fromPort: port,
       containerNode,
       document,

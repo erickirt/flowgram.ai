@@ -43,10 +43,16 @@ export const onDragLineEnd = async (ctx: FreeLayoutPluginContext, params: onDrag
 
   // get container node for the new node - 获取新节点的容器节点
   const containerNode = fromPort.node.parent;
+  const isVertical = fromPort.location === 'bottom';
 
   // open node selection panel - 打开节点选择面板
   const result = await nodePanelService.singleSelectNodePanel({
-    position: mousePos,
+    position: isVertical
+      ? {
+          x: mousePos.x - 165,
+          y: mousePos.y + 60,
+        }
+      : mousePos,
     containerNode,
     panelProps: {
       enableNodePlaceholder: true,
