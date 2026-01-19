@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { injectable, inject } from 'inversify';
+import { injectable, inject, optional } from 'inversify';
 import { DisposableCollection, Disposable } from '@flowgram.ai/utils';
 import { FreeLayoutPluginContext } from '@flowgram.ai/free-layout-editor';
 import {
@@ -33,7 +33,9 @@ export class WorkflowGroupService extends FlowGroupService {
 
   @inject(HistoryService) private historyService: HistoryService;
 
-  @inject(NodeIntoContainerService) private nodeIntoContainerService: NodeIntoContainerService;
+  @inject(NodeIntoContainerService)
+  @optional()
+  private nodeIntoContainerService?: NodeIntoContainerService;
 
   @inject(WorkflowGroupPluginOptions) private opts: WorkflowGroupPluginOptions;
 
@@ -42,7 +44,10 @@ export class WorkflowGroupService extends FlowGroupService {
   private toDispose = new DisposableCollection();
 
   public ready(): void {
-    this.toDispose.push(this.listenContainer());
+    const listenContainerDisposer = this.listenContainer();
+    if (listenContainerDisposer) {
+      this.toDispose.push(listenContainerDisposer);
+    }
   }
 
   public dispose(): void {
@@ -106,8 +111,8 @@ export class WorkflowGroupService extends FlowGroupService {
     this.historyService.endTransaction();
   }
 
-  private listenContainer(): Disposable {
-    return this.nodeIntoContainerService.on((e) => {
+  private listenContainer(): Disposable | undefined {
+    return this.nodeIntoContainerService?.on((e) => {
       if (
         e.type !== NodeIntoContainerType.Out ||
         e.sourceContainer?.flowNodeType !== FlowNodeBaseType.GROUP
