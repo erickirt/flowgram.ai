@@ -7,7 +7,7 @@ import { LlmsContainer, LlmsCopyButton, LlmsViewOptions } from '@rspress/plugin-
 import {
   HomeLayout as BaseHomeLayout,
   getCustomMDXComponent as basicGetCustomMDXComponent,
-} from '@rspress/core/theme';
+} from '@rspress/core/theme-original';
 import { NoSSR, useDark } from '@rspress/core/runtime';
 
 import { Background } from './components/background';
@@ -40,16 +40,16 @@ function HomeLayout(props: Parameters<typeof BaseHomeLayout>[0]) {
 
   return (
     <>
-      <div className="home-layout-container">
+      <>
         <NoSSR>
           {isDark && !isMobile && <Background />}
           <FlowGramLogo />
         </NoSSR>
         <BaseHomeLayout {...props} afterHero={null} afterHeroActions={null} />
-      </div>
+      </>
     </>
   );
 }
 
 export { getCustomMDXComponent, HomeLayout };
-export * from '@rspress/core/theme';
+export * from '@rspress/core/theme-original';
