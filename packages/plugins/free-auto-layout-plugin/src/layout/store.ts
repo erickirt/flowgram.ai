@@ -96,7 +96,7 @@ export class LayoutStore implements ILayoutStore {
             if (!from || !to || edge.vertical) {
               return;
             }
-            const id = `virtual_${groupId}_${to}`;
+            const id = `virtual_${groupId}_from_${from}_to_${to}`;
             const layoutEdge: LayoutEdge = {
               id: id,
               entity: edge,
@@ -116,7 +116,7 @@ export class LayoutStore implements ILayoutStore {
             if (!from || !to || edge.vertical) {
               return;
             }
-            const id = `virtual_${groupId}_${from}`;
+            const id = `virtual_${groupId}_from_${from}_to_${to}`;
             const layoutEdge: LayoutEdge = {
               id: id,
               entity: edge,
